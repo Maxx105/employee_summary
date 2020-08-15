@@ -10,6 +10,28 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const questions = [
+    {
+        type: "input",
+        message: "How many employees do you have?",
+        name:"numberEmployees",
+    },
+    {
+        type: "list",
+        message: "Choose an occupation.",
+        name:"occupation",
+        choices: ["Engineer" , "Intern", "Manager"]
+    },
+]
+let occupationCount = 0;
+function init() {
+    inquirer.prompt(questions).then(function(response){
+        console.log(response.numberEmployees);
+        console.log(response.occupation);
+        
+    })
+}
+init();
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
