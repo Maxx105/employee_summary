@@ -10,28 +10,101 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-const questions = [
+let employeeCount = 0;
+let employeeArray = [];
+let employeeObject = {};
+
+const employeeCountQuestion = {
+    type: 'input',
+    message: 'How many employees do you have?',
+    name: 'numberEmployees'
+};
+
+const employeeGenQuestions = [
     {
-        type: "input",
-        message: "How many employees do you have?",
-        name:"numberEmployees",
+        type: 'input',
+        message: "What is employee's name?",
+        name: 'name'
     },
     {
-        type: "list",
-        message: "Choose an occupation.",
-        name:"occupation",
-        choices: ["Engineer" , "Intern", "Manager"]
+        type: 'list',
+        message: "What is the employee's occupation?",
+        name: 'occupation',
+        choices: ['Manager', 'Engineer', 'Intern']
     },
-]
-let occupationCount = 0;
-function init() {
-    inquirer.prompt(questions).then(function(response){
-        console.log(response.numberEmployees);
-        console.log(response.occupation);
-        
-    })
+    {
+        type: 'input',
+        message: "What is the employee's email address?",
+        name: 'email'
+    }
+];
+
+const managerQuestion = {
+    type: 'input',
+    message: "What is the employee's office number?",
+    name: 'officeNumber'
 }
+
+const engineerQuestion = {
+    type: 'input',
+    message: "What is the employee's Github username?",
+    name: 'github'
+}
+
+const internQuestion = {
+    type: 'input',
+    message: "What is the employee's school?",
+    name: 'school'
+}
+
+
+async function init() {
+        try {
+            await inquirer.prompt(employeeCountQuestion).then(function(response){
+                employeeCount = parseInt(response.numberEmployees);
+            })
+            for (i = 0; i < employeeCount; i++) {
+                await inquirer.prompt(employeeGenQuestions).then(function(response){
+                    employeeObject = response;
+                    employeeObject.id = i + 1; 
+                });
+
+                if (employeeObject.occupation === 'Manager') {
+                    await inquirer.prompt(managerQuestion).then(function(response){
+                        employeeObject.officeNumber = response.officeNumber;
+                        const manager = new Manager(employeeObject.name, employeeObject.id, employeeObject.email, employeeObject.officeNumber);
+                        employeeArray.push(manager);
+                    });
+                }
+                if (employeeObject.occupation === 'Engineer') {
+                    await inquirer.prompt(engineerQuestion).then(function(response){
+                        employeeObject.github = response.github; 
+                        const engineer = new Engineer(employeeObject.name, employeeObject.id, employeeObject.email, employeeObject.github);
+                        employeeArray.push(engineer);
+                    });
+                }
+                if (employeeObject.occupation === 'Intern') {
+                    await inquirer.prompt(internQuestion).then(function(response){
+                        employeeObject.school = response.school;
+                        const intern = new Intern(employeeObject.name, employeeObject.id, employeeObject.email, employeeObject.school);
+                        employeeArray.push(intern);
+                    });
+                }
+                
+                console.log(employeeArray);
+            }
+
+            await render(employeeArray);
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 init();
+
+
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
