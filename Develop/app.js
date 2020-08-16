@@ -13,88 +13,99 @@ const render = require("./lib/htmlRenderer");
 let employeeCount = 0;
 let employeeArray = [];
 let employeeObject = {};
-
-const employeeCountQuestion = {
-    type: 'input',
-    message: 'How many employees do you have?',
-    name: 'numberEmployees'
-};
-
-const employeeGenQuestions = [
-    {
-        type: 'input',
-        message: "What is employee's name?",
-        name: 'name'
-    },
-    {
-        type: 'list',
-        message: "What is the employee's occupation?",
-        name: 'occupation',
-        choices: ['Manager', 'Engineer', 'Intern']
-    },
-    {
-        type: 'input',
-        message: "What is the employee's email address?",
-        name: 'email'
-    }
-];
-
-const managerQuestion = {
-    type: 'input',
-    message: "What is the employee's office number?",
-    name: 'officeNumber'
-}
-
-const engineerQuestion = {
-    type: 'input',
-    message: "What is the employee's Github username?",
-    name: 'github'
-}
-
-const internQuestion = {
-    type: 'input',
-    message: "What is the employee's school?",
-    name: 'school'
-}
-
+let employeeCounter = 0;
 
 async function init() {
         try {
-            await inquirer.prompt(employeeCountQuestion).then(function(response){
+            await inquirer.prompt(
+                {
+                    type: 'input',
+                    message: 'How many employees do you have?',
+                    name: 'numberEmployees'
+                }
+            ).then(function(response){
                 employeeCount = parseInt(response.numberEmployees);
             })
+
             for (i = 0; i < employeeCount; i++) {
-                await inquirer.prompt(employeeGenQuestions).then(function(response){
+                employeeCounter++;
+                await inquirer.prompt(
+                    [
+                        {
+                            type: 'input',
+                            message: `What is employee #${employeeCounter}'s name?`,
+                            name: 'name'
+                        },
+                        {
+                            type: 'list',
+                            message: `What is the employee #${employeeCounter}'s occupation?`,
+                            name: 'occupation',
+                            choices: ['Manager', 'Engineer', 'Intern']
+                        },
+                        {
+                            type: 'input',
+                            message: `What is the employee #${employeeCounter}'s email address?`,
+                            name: 'email'
+                        }
+                    ]
+                ).then(function(response){
                     employeeObject = response;
                     employeeObject.id = i + 1; 
                 });
 
                 if (employeeObject.occupation === 'Manager') {
-                    await inquirer.prompt(managerQuestion).then(function(response){
+                    await inquirer.prompt(
+                        {
+                            type: 'input',
+                            message: `What is the employee #${employeeCounter}'s office number?`,
+                            name: 'officeNumber'
+                        }
+                    ).then(function(response){
                         employeeObject.officeNumber = response.officeNumber;
                         const manager = new Manager(employeeObject.name, employeeObject.id, employeeObject.email, employeeObject.officeNumber);
                         employeeArray.push(manager);
                     });
                 }
+
                 if (employeeObject.occupation === 'Engineer') {
-                    await inquirer.prompt(engineerQuestion).then(function(response){
+                    await inquirer.prompt(
+                        {
+                            type: 'input',
+                            message: `What is the employee #${employeeCounter}'s Github username?`,
+                            name: 'github'
+                        }
+                    ).then(function(response){
                         employeeObject.github = response.github; 
                         const engineer = new Engineer(employeeObject.name, employeeObject.id, employeeObject.email, employeeObject.github);
                         employeeArray.push(engineer);
                     });
                 }
+
                 if (employeeObject.occupation === 'Intern') {
-                    await inquirer.prompt(internQuestion).then(function(response){
+                    await inquirer.prompt(
+                        {
+                            type: 'input',
+                            message: `What is the employee #${employeeCounter}'s school?`,
+                            name: 'school'
+                        }
+                    ).then(function(response){
                         employeeObject.school = response.school;
                         const intern = new Intern(employeeObject.name, employeeObject.id, employeeObject.email, employeeObject.school);
                         employeeArray.push(intern);
                     });
                 }
-                
-                console.log(employeeArray);
+
             }
 
             await render(employeeArray);
+
+            fs.writeFile(outputPath, render(employeeArray), function(err) {
+                if (err) {
+                    return console.log(err);
+                }
+                
+                  console.log("Success!");   
+            });
 
         } catch (err) {
             console.log(err);
