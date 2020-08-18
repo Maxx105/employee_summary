@@ -67,7 +67,7 @@ async function init() {
                     });
                 }
 
-                if (employeeObject.occupation === 'Engineer') {
+                else if (employeeObject.occupation === 'Engineer') {
                     await inquirer.prompt(
                         {
                             type: 'input',
@@ -81,7 +81,7 @@ async function init() {
                     });
                 }
 
-                if (employeeObject.occupation === 'Intern') {
+                else if (employeeObject.occupation === 'Intern') {
                     await inquirer.prompt(
                         {
                             type: 'input',
