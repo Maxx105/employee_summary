@@ -27,6 +27,32 @@ async function init() {
                 employeeCount = parseInt(response.numberEmployees);
             })
 
+            await inquirer.prompt(
+                [
+                    {
+                        type: 'input',
+                        message: `What is your name?`,
+                        name: 'name'
+                    },
+                    {
+                        type: 'input',
+                        message: `What is your email address?`,
+                        name: 'email'
+                    },
+                    {
+                        type: 'input',
+                        message: `What is your office number?`,
+                        name: 'officeNumber'
+                    }
+                ]
+            ).then(function(response){
+                employeeObject = response;
+                employeeObject.id = 1;
+                employeeObject.officeNumber = response.officeNumber;
+                const manager = new Manager(employeeObject.name, employeeObject.id, employeeObject.email, employeeObject.officeNumber);
+                employeeArray.push(manager);
+            })
+
             for (i = 0; i < employeeCount; i++) {
                 employeeCounter++;
                 await inquirer.prompt(
@@ -40,7 +66,7 @@ async function init() {
                             type: 'list',
                             message: `What is the employee #${employeeCounter}'s occupation?`,
                             name: 'occupation',
-                            choices: ['Manager', 'Engineer', 'Intern']
+                            choices: ['Engineer', 'Intern']
                         },
                         {
                             type: 'input',
@@ -50,24 +76,24 @@ async function init() {
                     ]
                 ).then(function(response){
                     employeeObject = response;
-                    employeeObject.id = i + 1; 
+                    employeeObject.id = i + 2; 
                 });
 
-                if (employeeObject.occupation === 'Manager') {
-                    await inquirer.prompt(
-                        {
-                            type: 'input',
-                            message: `What is the employee #${employeeCounter}'s office number?`,
-                            name: 'officeNumber'
-                        }
-                    ).then(function(response){
-                        employeeObject.officeNumber = response.officeNumber;
-                        const manager = new Manager(employeeObject.name, employeeObject.id, employeeObject.email, employeeObject.officeNumber);
-                        employeeArray.push(manager);
-                    });
-                }
+                // if (employeeObject.occupation === 'Manager') {
+                //     await inquirer.prompt(
+                //         {
+                //             type: 'input',
+                //             message: `What is the employee #${employeeCounter}'s office number?`,
+                //             name: 'officeNumber'
+                //         }
+                //     ).then(function(response){
+                //         employeeObject.officeNumber = response.officeNumber;
+                //         const manager = new Manager(employeeObject.name, employeeObject.id, employeeObject.email, employeeObject.officeNumber);
+                //         employeeArray.push(manager);
+                //     });
+                // }
 
-                else if (employeeObject.occupation === 'Engineer') {
+                if (employeeObject.occupation === 'Engineer') {
                     await inquirer.prompt(
                         {
                             type: 'input',
