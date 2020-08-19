@@ -32,7 +32,7 @@ Open a terminal and enter the 'Develop' directory. Run the app.js by typing 'nod
  ![languages badge](https://img.shields.io/github/languages/top/maxx105/employee_summary)
 
 ## Tests 
- Several tests were created and passed in this project. See Engineer.test.js, Intern.test.js, Manager.test.js, and Engineer.test.js. I used Jest for testing. In the Develop director, run 'npm run test' in your terminal to check for tests.
+ Several tests were created and passed in this project. See Employee.test.js, Intern.test.js, Manager.test.js, and Engineer.test.js. I used Jest for testing. In the Develop director, run 'npm run test' in your terminal to check for tests.
 
 ## Questions 
  For any questions, contact me at [maxxsanner105@gmail.com](mailto:maxxsanner105@gmail.com).
