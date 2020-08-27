@@ -3,6 +3,8 @@ UCI Boot Camp Homework 10 - Employee Summary Template Engine
 
 ![deployed application](Assets/deployed_app.JPG)
 
+Click [HERE](https://drive.google.com/file/d/1g7Fa2icyY4nIdxdX_Vez_40wULKa5xVM/view) for video demonstration of deployed application.
+
 ## Description 
  This was the tenth homework assignment for the full stack web development program at UC Irvine, in which the goal was to build an application that allows the manager of a team to create a roster of his or her employees via CLI along with appropriate information about each employee and append it to an HTML webpage. Additionally, the goal was also to create and pass a series of Jest tests.
 
